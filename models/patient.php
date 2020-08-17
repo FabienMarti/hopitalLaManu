@@ -1,5 +1,6 @@
 <?php
 class patient{
+
     public $id = 0;
     public $firstname = '';
     public $lastname = '';
@@ -13,7 +14,7 @@ class patient{
         try
         {
             //récupération de la db dans une variable
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
         }
         catch (Exception $e)
         {
@@ -54,6 +55,7 @@ class patient{
         return $data->isPatientExists;
         var_dump($data->isPatientExists);
     }
+
     public function getAllPatientsInfo(){
         $allPatientQuery = $this->db->query(
             'SELECT
@@ -65,6 +67,7 @@ class patient{
             ');
             return $allPatientQuery->fetchAll(PDO::FETCH_OBJ);
     }
+
     public function getPatientInfo($id) {
         $getPatientQuery = $this->db->query(
         'SELECT 
@@ -80,5 +83,25 @@ class patient{
             `id` = '.$id
         );
         return $getPatientQuery->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function editPatientInfo($id){
+        $editPatientQuery = $this->db->prepare(
+            'UPDATE
+                `patients`
+            SET
+                `lastname` = :lastname
+                ,`firstname` = :firstname
+                ,`birthdate` = :birthdate
+                ,`phone` = :phone
+                ,`mail` = :mail
+            WHERE `id`=' . $id
+            );
+        $editPatientQuery->bindvalue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $editPatientQuery->bindvalue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $editPatientQuery->bindvalue(':birthdate', $this->birthdate, PDO::PARAM_STR);
+        $editPatientQuery->bindvalue(':phone', $this->phone, PDO::PARAM_STR);
+        $editPatientQuery->bindvalue(':mail', $this->mail, PDO::PARAM_STR);
+        return $editPatientQuery->execute();      
     }
 }

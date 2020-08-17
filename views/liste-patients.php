@@ -13,4 +13,3 @@ include 'controllers/liste-patientsController.php';
                 }?>
     </table>
 </div>
-
