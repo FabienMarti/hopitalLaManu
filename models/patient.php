@@ -26,11 +26,11 @@ class patient{
         $sth = $this->db->prepare(
         'INSERT INTO `patients`(`lastname`, `firstname`, `birthdate`, `phone`, `mail`)
         VALUES(:lastname, :firstname, :birthdate, :phone, :mail)');
-        $sth->bindvalue(':lastname', $this->lastname, PDO::PARAM_STR);
-        $sth->bindvalue(':firstname', $this->firstname, PDO::PARAM_STR);
-        $sth->bindvalue(':birthdate', $this->birthdate, PDO::PARAM_STR);
-        $sth->bindvalue(':phone', $this->phone, PDO::PARAM_STR);
-        $sth->bindvalue(':mail', $this->mail, PDO::PARAM_STR);
+        $sth->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $sth->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $sth->bindValue(':birthdate', $this->birthdate, PDO::PARAM_STR);
+        $sth->bindValue(':phone', $this->phone, PDO::PARAM_STR);
+        $sth->bindValue(':mail', $this->mail, PDO::PARAM_STR);
         return $sth->execute(); 
     }
 
@@ -47,13 +47,12 @@ class patient{
             AND
                 `mail`= :mail
             ');
-        $addPatientSameQuery->bindvalue(':lastname', $this->lastname, PDO::PARAM_STR);
-        $addPatientSameQuery->bindvalue(':firstname', $this->firstname, PDO::PARAM_STR);
-        $addPatientSameQuery->bindvalue(':mail', $this->mail, PDO::PARAM_STR);
+        $addPatientSameQuery->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $addPatientSameQuery->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $addPatientSameQuery->bindValue(':mail', $this->mail, PDO::PARAM_STR);
         $addPatientSameQuery->execute();
         $data = $addPatientSameQuery->fetch(PDO::FETCH_OBJ);
         return $data->isPatientExists;
-        var_dump($data->isPatientExists);
     }
 
     public function getAllPatientsInfo(){
@@ -68,7 +67,7 @@ class patient{
             return $allPatientQuery->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function getPatientInfo($id) {
+    public function test($id) {
         $getPatientQuery = $this->db->query(
         'SELECT 
             `id`
@@ -85,7 +84,26 @@ class patient{
         return $getPatientQuery->fetch(PDO::FETCH_OBJ);
     }
 
-    public function editPatientInfo($id){
+     public function getPatientInfo() {
+        $getPatientQuery = $this->db->prepare(
+        'SELECT 
+            `id`
+            , `lastname`
+            , `firstname`
+            , DATE_FORMAT (`birthdate`, \'%d/%m/%Y\') AS `birthdateFR`
+            , `phone`
+            , `mail`
+        FROM 
+            `patients`
+        WHERE 
+            `id` = :id'
+        );
+        $getPatientQuery->bindValue(':id', $this->id, PDO::PARAM_STR);
+        $getPatientQuery->execute();
+        return $getPatientQuery->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function editPatientInfo(){
         $editPatientQuery = $this->db->prepare(
             'UPDATE
                 `patients`
@@ -95,13 +113,14 @@ class patient{
                 ,`birthdate` = :birthdate
                 ,`phone` = :phone
                 ,`mail` = :mail
-            WHERE `id`=' . $id
+            WHERE `id`= :id '
             );
-        $editPatientQuery->bindvalue(':lastname', $this->lastname, PDO::PARAM_STR);
-        $editPatientQuery->bindvalue(':firstname', $this->firstname, PDO::PARAM_STR);
-        $editPatientQuery->bindvalue(':birthdate', $this->birthdate, PDO::PARAM_STR);
-        $editPatientQuery->bindvalue(':phone', $this->phone, PDO::PARAM_STR);
-        $editPatientQuery->bindvalue(':mail', $this->mail, PDO::PARAM_STR);
+        $editPatientQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $editPatientQuery->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $editPatientQuery->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $editPatientQuery->bindValue(':birthdate', $this->birthdate, PDO::PARAM_STR);
+        $editPatientQuery->bindValue(':phone', $this->phone, PDO::PARAM_STR);
+        $editPatientQuery->bindValue(':mail', $this->mail, PDO::PARAM_STR);
         return $editPatientQuery->execute();      
     }
 }

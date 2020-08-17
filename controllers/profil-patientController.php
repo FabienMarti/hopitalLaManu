@@ -14,7 +14,8 @@ foreach ($patient->getAllPatientsInfo() as $idPatient) {
 
 if(isset($_GET['id'])) {
     if(in_array($_GET['id'], $idArray)) {
-        $showPatientInfo = $patient->getPatientInfo(htmlspecialchars($_GET['id']));
+        $patient->id = htmlspecialchars($_GET['id']);
+        $showPatientInfo = $patient->getPatientInfo();
     }else {
     header ('Location: index.php?content=liste-patients');
     }
@@ -74,7 +75,8 @@ if(isset($_POST['editProfil'])){
         }
         
         if(empty($formErrors)){
-                if($patient->editPatientInfo(htmlspecialchars($showPatientInfo->id))){
+                $patient->id = htmlspecialchars($showPatientInfo->id);
+                if($patient->editPatientInfo()){
                     $addPatientMessage = 'Le patient a bien été modifié.';
                 }else {
                     $addPatientMessage = 'Une erreur est survenue pendant l\'enregistrement. Veuillez contacter le service informatique.';
