@@ -46,8 +46,5 @@ include 'controllers/profil-patientController.php';
             </ul>
             <a href="<?= $_SERVER['REQUEST_URI'] ?>&edit=true" class="btn btn-primary">Modifier</a>
         <?php } ?>
-
-
-
     </div>
 </div>
