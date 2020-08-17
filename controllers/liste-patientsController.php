@@ -1,2 +1,3 @@
 <?php
-    $showPatientInfo = getPatientInfo();
+    $patient = new patient();
+    $showPatientsInfo = $patient->getAllPatientsInfo();

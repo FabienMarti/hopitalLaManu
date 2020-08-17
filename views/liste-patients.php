@@ -4,11 +4,12 @@ include 'controllers/liste-patientsController.php';
 ?>
 <h1 class="text-center">Liste des patients</h1>
 <div class="row justify-content-around">
-    <table class="table table-striped border col-6">
+    <table class="table table-striped border col-6 mt-5">
             <?php 
-                foreach ($showPatientInfo as $info) {
+                foreach ($showPatientsInfo as $info) {
                     ?><tr><td>Nom : <?= $info->lastname ?></td>
-                    <td>Prénom : <?= $info->firstname ?></td></tr><?php
+                    <td>Prénom : <?= $info->firstname ?></td>
+                    <td><a href="index.php?content=profil-patient&id=<?= $info->id ?>" class="btn btn-primary" role="button" aria-disabled="true">Fiche</a></td></tr><?php
                 }?>
     </table>
 </div>

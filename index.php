@@ -45,7 +45,6 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="index.php?content=ajout-patient">Ajout patient</a>
               <a class="dropdown-item" href="index.php?content=liste-patients">Liste des patients</a>
-              <a class="dropdown-item" href="index.php?content=profil-patient">Profil patient</a>
             </div>
           </li>
           <li class="nav-item dropdown">
