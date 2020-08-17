@@ -14,7 +14,7 @@ class patient{
         try
         {
             //récupération de la db dans une variable
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
         }
         catch (Exception $e)
         {
@@ -53,7 +53,6 @@ class patient{
         $addPatientSameQuery->execute();
         $data = $addPatientSameQuery->fetch(PDO::FETCH_OBJ);
         return $data->isPatientExists;
-        var_dump($data->isPatientExists);
     }
 
     public function getAllPatientsInfo(){
@@ -64,12 +63,13 @@ class patient{
                 , `firstname`
             FROM
                 `patients`
+            ORDER BY `lastname`
             ');
             return $allPatientQuery->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function getPatientInfo($id) {
-        $getPatientQuery = $this->db->query(
+    public function getPatientInfo() {
+        $getPatientQuery = $this->db->prepare(
         'SELECT 
             `id`
             , `lastname`
@@ -80,8 +80,10 @@ class patient{
         FROM 
             `patients`
         WHERE 
-            `id` = '.$id
-        );
+            `id` = :id
+        ');
+        $getPatientQuery->bindvalue(':id', $this->id, PDO::PARAM_STR);
+        $getPatientQuery->execute();  
         return $getPatientQuery->fetch(PDO::FETCH_OBJ);
     }
 
