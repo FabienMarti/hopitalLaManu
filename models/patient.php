@@ -96,8 +96,8 @@ class patient{
                 ,`birthdate` = :birthdate
                 ,`phone` = :phone
                 ,`mail` = :mail
-            WHERE `id`= :id '
-            );
+            WHERE `id`= :id 
+            ');
         $editPatientQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
         $editPatientQuery->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
         $editPatientQuery->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
@@ -105,6 +105,6 @@ class patient{
         $editPatientQuery->bindValue(':phone', $this->phone, PDO::PARAM_STR);
         $editPatientQuery->bindValue(':mail', $this->mail, PDO::PARAM_STR);
         return $editPatientQuery->execute();   
-           
+
     }
 }
