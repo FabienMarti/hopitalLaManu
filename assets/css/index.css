@@ -1,0 +1,48 @@
+html{
+    background-image: url('../img/backgroundPlus.png');
+}
+#headerBG{
+    background-image: url('../img/headerE2N.png');
+    background-size: cover;
+}
+footer{
+    color: white;
+    background-color: #16476B;
+}
+footer ul{
+    padding-left: 0;
+}
+footer li{
+    list-style: none;
+
+}
+footer a {
+    color : white;
+}
+.formBtn{
+    background-color: #13A7E7;
+    color: white;
+}
+.title{
+    color : #13A7E7;
+}
+nav{
+    background-color: #16476B;
+}
+nav a{
+    color: white; /* blue colors for links too */
+    font-weight: bold;
+    text-decoration: inherit; /* no underline */
+}
+nav a:hover{
+    color: #339ED8;
+}
+.socials{
+    background-color: #13A7E7;
+}
+/* Color Theme Swatches in Hex */
+.Thème-4-1-hex { color: #3E7E8C; }
+.Thème-4-2-hex { color: #4EB4BF; }
+.Thème-4-3-hex { color: #6CD9D9; }
+.Thème-4-4-hex { color: #285959; }
+.Thème-4-5-hex { color: #3E8C8C; }

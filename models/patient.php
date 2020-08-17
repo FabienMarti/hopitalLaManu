@@ -1,0 +1,59 @@
+<?php
+class patient{
+    public $id = 0;
+    public $firstname = '';
+    public $lastname = '';
+    public $birthdate = '0000-00-00';
+    public $phone = '';
+    public $mail = '';
+    private $db = NULL;
+
+    public function __construct(){
+
+        try
+        {
+            //récupération de la db dans une variable
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
+        }
+        catch (Exception $e)
+        {
+            die('Erreur : ' . $e->getMessage());
+        } 
+    }
+
+    public function addPatient(){
+        $sth = $this->db->prepare(
+        'INSERT INTO `patients`(`lastname`, `firstname`, `birthdate`, `phone`, `mail`)
+        VALUES(:lastname, :firstname, :birthdate, :phone, :mail)');
+        $sth->bindvalue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $sth->bindvalue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $sth->bindvalue(':birthdate', $this->birthdate, PDO::PARAM_STR);
+        $sth->bindvalue(':phone', $this->phone, PDO::PARAM_STR);
+        $sth->bindvalue(':mail', $this->mail, PDO::PARAM_STR);
+        return $sth->execute(); 
+    }
+
+    public function checkPatientExists(){
+        $addPatientSameQuery = $this->db->prepare(
+            'SELECT 
+                COUNT(`id`) AS `ìsPatientExists`
+            FROM 
+                `patients` 
+            WHERE
+                `lastname`= :lastname
+            AND
+                `firstname`= :firstname
+            AND
+                `mail`= :mail
+            ');
+        $addPatientSameQuery->bindvalue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $addPatientSameQuery->bindvalue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $addPatientSameQuery->bindvalue(':mail', $this->mail, PDO::PARAM_STR);
+        $addPatientSameQuery->execute();
+        $data = $addPatientSameQuery->fetch(PDO::FETCH_OBJ);
+        return $data->isPatientExists;
+        var_dump($data->isPatientExists);
+
+
+    }
+}
