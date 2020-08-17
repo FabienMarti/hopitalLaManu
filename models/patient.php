@@ -53,7 +53,5 @@ class patient{
         $data = $addPatientSameQuery->fetch(PDO::FETCH_OBJ);
         return $data->isPatientExists;
         var_dump($data->isPatientExists);
-
-
     }
 }
