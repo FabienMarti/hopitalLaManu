@@ -86,7 +86,6 @@ class patient{
         $getPatientQuery->execute();  
         return $getPatientQuery->fetch(PDO::FETCH_OBJ);
     }
-
     public function editPatientInfo(){
         $editPatientQuery = $this->db->prepare(
             'UPDATE
