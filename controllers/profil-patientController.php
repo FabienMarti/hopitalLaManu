@@ -72,6 +72,7 @@ if(isset($_POST['editProfil'])){
             
         } else {
             $formErrors['birthdate'] = 'Merci de renseigner votre date de naissance';
+            
         }
         
         if(empty($formErrors)){
