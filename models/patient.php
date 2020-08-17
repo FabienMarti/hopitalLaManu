@@ -56,4 +56,13 @@ class patient{
 
 
     }
+    public function getAllPatientsInfo(){
+        $allPatientQuery = $this->db->query(
+            'SELECT
+                *
+            FROM
+                `patients`
+            ');
+            return $allPatientQuery->fetchAll(PDO::FETCH_OBJ);
+    }
 }
