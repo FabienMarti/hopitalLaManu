@@ -56,6 +56,6 @@
         </div>
     </div>
     <div class="text-center">
-            <input class="btn formBtn" type="submit" value="Enregistrer" name="addPatient" />
+        <input class="btn formBtn" type="submit" value="Enregistrer" name="addPatient" />
     </div>
 </form>

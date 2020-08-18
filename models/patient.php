@@ -113,7 +113,7 @@ public function getAllPatientsInfo(){
                 ,`mail` = :mail
             WHERE `id`= :id 
             ');
-            //On choisi les colonnes que l'on souhaite modifier avec SET, on leur attribue une marqueur nominatif
+            //On choisi les colonnes que l'on souhaite modifier avec SET, on leur attribue un marqueur nominatif
         $editPatientQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
         $editPatientQuery->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
         $editPatientQuery->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
