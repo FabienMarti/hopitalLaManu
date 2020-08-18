@@ -56,7 +56,7 @@ if(isset($_POST['addPatient'])) {
     }
     
     if(empty($formErrors)){
-        // Exécute la méthode checkPatientExists qui retourne TRUE si le patient existe déjà
+        // Exécute la méthode checkPatientExists qui retourne 1 si le patient existe déjà
         if(!$patient->checkPatientExists()) {
             //Exécute la méthode addPatient
             if($patient->addPatient()){

@@ -5,25 +5,25 @@ $patternPhone = '%^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$%';
 $regexbirthdate = '%^\d{1,2}\/\d{1,2}\/\d{4}$%';
 $formErrors = array();
 
+//on instancie la classe patient dans $patient
 $patient = new patient();
-$idArray = array();
-
-foreach ($patient->getAllPatientsInfo() as $idPatient) {
-    array_push($idArray, $idPatient->id);
-}
 
 if(isset($_GET['id'])) {
-    if(in_array($_GET['id'], $idArray)) {
-        $patient->id = htmlspecialchars($_GET['id']);
-        $showPatientInfo = $patient->getPatientInfo();
-    }else {
-    header ('Location: index.php?content=liste-patients');
-    }
+    //on stock la valeur de $_GET['id'] dans la variable id de l'objet patient 
+    $patient->id = htmlspecialchars($_GET['id']);
+    //on vérifie avec la méthode checkPatientExistById que notre patient existe dans notre BDD.
+        if ($patient->checkPatientExistById() == 1) {
+            //si le patient existe, on execute la méthode getPatientInfo. 
+            $showPatientInfo = $patient->getPatientInfo();
+        }else {
+            //redirige vers la page liste_patients
+            header ('Location: index.php?content=liste-patients');
+            exit;
+        }
 }
 
 if(isset($_POST['editProfil'])){
     if(!empty($_POST)){
-
         if (!empty($_POST['lastname'])) {
             // Si la valeur est présente dans le tableau 
             if (preg_match($patternGroup, $_POST['lastname'])) {

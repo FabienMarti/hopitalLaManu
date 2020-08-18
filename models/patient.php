@@ -60,8 +60,8 @@ public function checkPatientExists(){
         $addPatientSameQuery->execute();
         $data = $addPatientSameQuery->fetch(PDO::FETCH_OBJ);
         //On retourne isPatientExists sous la forme d'un booleen
-        /* A VERIFIER : Count retourne un booléen, on cherche dans la table 'patients' notre saisie, 
-        avec son nom, prénom et mail. Si une correspondance est trouvée, l'id sera dupliquée et le COUNT retournera true */
+        /* A VERIFIER : Count retourne un 0 ou un 1, on cherche dans la table 'patients' notre saisie, 
+        avec son nom, prénom et mail. Si une correspondance est trouvée, l'id sera dupliquée et le COUNT retournera 1 */
         return $data->isPatientExists;
     }
 
@@ -78,7 +78,20 @@ public function getAllPatientsInfo(){
             ');
             return $allPatientQuery->fetchAll(PDO::FETCH_OBJ);
     }
-
+/******************* CRUD -> R (read) -- VERIFIER EXISTENCE ID *******************/
+    public function checkPatientExistById() {
+        $checkPatientIdQuery = $this->db->prepare(
+            'SELECT COUNT(`id`) AS `isPatientIdExist`
+            FROM
+                `patients`
+            WHERE
+                `id` = :id
+        ');
+        $checkPatientIdQuery->bindValue(':id', $this->id, PDO::PARAM_INT); // INT pour les nombres entiers
+        $checkPatientIdQuery->execute();  
+        $data = $checkPatientIdQuery->fetch(PDO::FETCH_OBJ);
+        return $data->isPatientIdExist;
+    }
 /******************* CRUD -> R (read) -- LECTURE DE 1 PATIENT *******************/
     public function getPatientInfo() {
         $getPatientQuery = $this->db->prepare(
