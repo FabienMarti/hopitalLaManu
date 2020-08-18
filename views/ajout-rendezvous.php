@@ -29,22 +29,25 @@ include 'controllers/ajout-rendez-vousController.php';
             </div>
     </form>
    <?php } else{ ?>
-
     <form action="" method="POST">
         <p class="h4">Etape 1 : Patient</p>
         <div class="row">
-            <div class="col-6 form-group">
-                <label for="lastname">Nom : </label>
+            <div class="col form-group md-form">
+                <label for="lastname">Nom</label>
                 <input type="text" id="lastname" name="lastname" class="form-control" />
             </div>
-            <div class="col-6 form-group">
-                <label for="firstname">Prénom : </label>
+            <div class="col form-group md-form">
+                <label for="firstname">Prénom</label>
                 <input type="text" id="firstname" name="firstname" class="form-control" />
             </div>
-            <div class="col form-group text-center">
-                <input type="submit" name="searchPatient" value="Rechercher" class="btn btn-primary" />
+            <div class="col form-group md-form">
+                <label for="mail">Adresse mail</label>
+                <input type="email" id="mail" name="mail" class="form-control" />
             </div>
         </div>
+        <div class="form-group text-center">
+                <input type="submit" name="searchPatient" value="Rechercher" class="btn btn-primary" />
+            </div>
         <p class="text-center text-danger font-weight-bold"><?= isset ($message) ? $message : '' ?></p>
     </form>
 <?php } ?>

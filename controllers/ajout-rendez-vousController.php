@@ -34,6 +34,17 @@ if(isset($_POST['searchPatient'])){
             $formErrors['firstname'] = 'Veuillez renseigner votre prénom';
         }
 
+        //adresse mail
+        if (!empty($_POST['mail'])) {
+            if (filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) {
+                $patient->mail = htmlspecialchars($_POST['mail']);
+            }else {
+                $formErrors['mail'] = 'Votre adresse mail est incorrect, exemple : jean-dupont@gmail.com';
+            }
+        }else {
+        $formErrors['mail'] = 'Veuillez renseigner votre adresse mail';
+        }
+
         if(empty($formErrors)){
             if($patient->getPatientByName()){
                 $patientId = $patient->id;

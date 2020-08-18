@@ -147,15 +147,19 @@ public function getAllPatientsInfo(){
             WHERE 
                 `lastname` = :lastname
                 AND `firstname` = :firstname
+                AND `mail` = :mail
         ');
         $getPatient->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
         $getPatient->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $getPatient->bindValue(':mail', $this->mail, PDO::PARAM_STR);
         $getPatient->execute();
         $data =  $getPatient->fetch(PDO::FETCH_OBJ);
+        //hydratation, on verifie que $data contient un objet puis on redefini notre id dans la classe avec l'id récupéré
         if(is_object($data)){
             $this->id = $data->id;
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 }
