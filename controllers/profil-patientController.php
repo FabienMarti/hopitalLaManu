@@ -74,6 +74,7 @@ if(isset($_POST['editProfil'])){
             $formErrors['birthdate'] = 'Merci de renseigner votre date de naissance';
         }
         
+        //MAJ
         if(empty($formErrors)){
                 $patient->id = htmlspecialchars($showPatientInfo->id);
                 if($patient->editPatientInfo()){

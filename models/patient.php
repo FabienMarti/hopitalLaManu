@@ -14,7 +14,7 @@ class patient{
         try
         {
             //récupération de la db dans une variable
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
         }
         catch (Exception $e)
         {
@@ -81,7 +81,7 @@ public function getAllPatientsInfo(){
 
 /******************* CRUD -> R (read) -- LECTURE DE 1 PATIENT *******************/
     public function getPatientInfo() {
-        $getPatientQuery = $this->db->query(
+        $getPatientQuery = $this->db->prepare(
         'SELECT 
             `id`
             , `lastname`
@@ -94,7 +94,7 @@ public function getAllPatientsInfo(){
         WHERE 
             `id` = :id
         ');
-        $getPatientQuery->bindvalue(':id', $this->id, PDO::PARAM_STR);
+        $getPatientQuery->bindvalue(':id', $this->id, PDO::PARAM_INT);
         $getPatientQuery->execute();  
         return $getPatientQuery->fetch(PDO::FETCH_OBJ);
     }
@@ -105,7 +105,7 @@ public function getAllPatientsInfo(){
         $editPatientQuery = $this->db->prepare(
             'UPDATE
                 `patients`
-            SET
+            SET 
                 `lastname` = :lastname
                 ,`firstname` = :firstname
                 ,`birthdate` = :birthdate
