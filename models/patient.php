@@ -14,7 +14,7 @@ class patient{
         try
         {
             //récupération de la db dans une variable
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
         }
         catch (Exception $e)
         {
@@ -94,7 +94,7 @@ public function getAllPatientsInfo(){
         WHERE 
             `id` = :id
         ');
-        $getPatientQuery->bindvalue(':id', $this->id, PDO::PARAM_INT);
+        $getPatientQuery->bindValue(':id', $this->id, PDO::PARAM_INT); // INT pour les nombres entiers
         $getPatientQuery->execute();  
         return $getPatientQuery->fetch(PDO::FETCH_OBJ);
     }
@@ -113,7 +113,7 @@ public function getAllPatientsInfo(){
                 ,`mail` = :mail
             WHERE `id`= :id 
             ');
-            //On choisi les colonnes que l'on souhaite modifier avec SET, on leur attribue un marqueur nominatif
+            //On choisi les colonnes que l'on souhaite modifier avec SET, on leur attribue un marqueur nominatif ':  ' avec un bind et un execute
         $editPatientQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
         $editPatientQuery->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
         $editPatientQuery->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
