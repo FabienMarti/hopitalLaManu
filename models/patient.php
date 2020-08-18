@@ -29,7 +29,7 @@ class patient{
         'INSERT INTO `patients`(`lastname`, `firstname`, `birthdate`, `phone`, `mail`)
         VALUES(:lastname, :firstname, :birthdate, :phone, :mail)');
 
-        //On définie la valeur de nos **MACHIN DE NOMMAGE**
+        //On définie la valeur de nos marqueurs nominatifs
         $sth->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
         $sth->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
         $sth->bindValue(':birthdate', $this->birthdate, PDO::PARAM_STR);
@@ -60,12 +60,14 @@ public function checkPatientExists(){
         $addPatientSameQuery->execute();
         $data = $addPatientSameQuery->fetch(PDO::FETCH_OBJ);
         //On retourne isPatientExists sous la forme d'un booleen
-        /* A VERIFIER : Count retourne un 0 ou un 1, on cherche dans la table 'patients' notre saisie, 
+        /* Count retourne un 0 ou un 1, on cherche dans la table 'patients' notre saisie, 
         avec son nom, prénom et mail. Si une correspondance est trouvée, l'id sera dupliquée et le COUNT retournera 1 */
         return $data->isPatientExists;
     }
 
 /******************* CRUD -> R (read) -- LECTURE TOUTE LA TABLE PATIENTS *******************/
+//Query quand l'utilisateur n'envoie pas lui même de données, Prepare -- bindValue -- execute quand l'utilisateur envoie des données
+//pour passer par la sécurité PARAM et des marqueurs nominatifs.
 public function getAllPatientsInfo(){
         $allPatientQuery = $this->db->query(
             'SELECT
@@ -134,5 +136,26 @@ public function getAllPatientsInfo(){
         $editPatientQuery->bindValue(':phone', $this->phone, PDO::PARAM_STR);
         $editPatientQuery->bindValue(':mail', $this->mail, PDO::PARAM_STR);
         return $editPatientQuery->execute();   
+    }
+
+    public function getPatientByName(){
+        $getPatient = $this->db->prepare(
+            'SELECT
+                `id`
+            FROM
+                `patients`
+            WHERE 
+                `lastname` = :lastname
+                AND `firstname` = :firstname
+        ');
+        $getPatient->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $getPatient->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $getPatient->execute();
+        $data =  $getPatient->fetch(PDO::FETCH_OBJ);
+        if(is_object($data)){
+            $this->id = $data->id;
+            return true;
+        }
+        return false;
     }
 }
