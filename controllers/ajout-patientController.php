@@ -50,16 +50,15 @@ if(isset($_POST['addPatient'])) {
     }
 
     if (!empty($_POST['birthDate'])) {
-        
         $patient->birthdate = date('Y-d-m', strtotime(htmlspecialchars($_POST['birthDate'])));
-        
     } else {
         $formErrors['birthDate'] = 'Merci de renseigner votre date de naissance';
     }
     
     if(empty($formErrors)){
-        // Exécute la méthode
+        // Exécute la méthode checkPatientExists qui retourne TRUE si le patient existe déjà
         if(!$patient->checkPatientExists()) {
+            //Exécute la méthode addPatient
             if($patient->addPatient()){
             $addPatientMessage = 'Le patient a bien été enregistré.';
             }else {
