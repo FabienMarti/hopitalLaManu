@@ -2,15 +2,31 @@
 $patternGroup = '%^([A-Z]{1}[a-zÀ-ÖØ-öø-ÿ]+)([\-\ ]{1}[A-Z]{1}[a-zÀ-ÖØ-öø-ÿ]+)*$%'; // Regex pour plusieurs champs
 
 $patient = new patient();
+$appointment = new appointment();
 
 $formErrors = array();
 
-$patientId = 0;
-
 $patientExists = false;
-if(isset($_POST['searchPatient'])){
-    if(!empty($_POST)){
-        
+
+if(isset($_POST['addRdv'])) {
+    if(!empty($_POST)) {
+        // Date
+        if(!empty($_POST['rdvDate'])){
+            $date = htmlspecialchars($_POST['rdvDate']);
+        }else {
+            $formErrors['rdvDAte'] = 'Veuillez renseigner une date';
+        }
+        // Heure
+        if(isset($_POST['rdvHour'])){
+            $hour = htmlspecialchars($_POST['rdvHour']);
+        }else {
+            $formErrors['rdvDAte'] = 'Veuillez renseigner une heure';
+        }
+    }
+}
+
+if(isset($_POST['searchPatient'])) {
+    if(!empty($_POST)) {
         //Nom
         if (!empty($_POST['lastname'])) {
             // Si la valeur est présente dans le tableau 

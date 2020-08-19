@@ -1,9 +1,11 @@
 <?php
 include 'models/patient.php';
+include 'models/appointment.php';
 include 'controllers/ajout-rendez-vousController.php';
 ?>
 <?php
     if($patientExists == true){ ?>
+    <p class="h3 text-center mb-5">Le patient sélectionné est <?= $patient->lastname . ' ' . $patient->firstname?></p>
     <form action="" method="POST">
         <div class="form-group row text-center">
             <div class="col-6">

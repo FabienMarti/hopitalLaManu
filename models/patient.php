@@ -25,6 +25,7 @@ class patient{
     public function addPatient(){    
         //On sépare la requête en deux parties
         //On prépare la requête sans utiliser de variables extérieures, en utilisant des marqueurs nominatifs
+        //$this permet de sélectionner les éléments de la classe du fichier
         $sth = $this->db->prepare(
         'INSERT INTO `patients`(`lastname`, `firstname`, `birthdate`, `phone`, `mail`)
         VALUES(:lastname, :firstname, :birthdate, :phone, :mail)');
@@ -162,4 +163,6 @@ public function getAllPatientsInfo(){
             return false;
         }
     }
+
+    
 }
