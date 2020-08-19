@@ -8,8 +8,8 @@ $formErrors = array();
 //on instancie la classe patient dans $patient
 $patient = new patient();
 
-if(isset($_GET['id'])) {
-    //on stock la valeur de $_GET['id'] dans la variable id de l'objet patient 
+if(!empty($_GET['id'])) {
+    //on stock la valeur de $_GET['id'] dans l'attribut id de l'objet patient 
     $patient->id = htmlspecialchars($_GET['id']);
     //on vérifie avec la méthode checkPatientExistById que notre patient existe dans notre BDD.
     if ($patient->checkPatientExistById() == '1') {

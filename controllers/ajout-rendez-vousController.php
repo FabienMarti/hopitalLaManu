@@ -4,26 +4,10 @@ $patternGroup = '%^([A-Z]{1}[a-zÀ-ÖØ-öø-ÿ]+)([\-\ ]{1}[A-Z]{1}[a-zÀ-ÖØ-
 $patient = new patient();
 $appointment = new appointment();
 
+
 $formErrors = array();
 
 $patientExists = false;
-
-if(isset($_POST['addRdv'])) {
-    if(!empty($_POST)) {
-        // Date
-        if(!empty($_POST['rdvDate'])){
-            $date = htmlspecialchars($_POST['rdvDate']);
-        }else {
-            $formErrors['rdvDAte'] = 'Veuillez renseigner une date';
-        }
-        // Heure
-        if(isset($_POST['rdvHour'])){
-            $hour = htmlspecialchars($_POST['rdvHour']);
-        }else {
-            $formErrors['rdvDAte'] = 'Veuillez renseigner une heure';
-        }
-    }
-}
 
 if(isset($_POST['searchPatient'])) {
     if(!empty($_POST)) {
@@ -71,3 +55,30 @@ if(isset($_POST['searchPatient'])) {
         }
     }
 }
+
+if(isset($_POST['addRdv'])) {
+    if(!empty($_POST)) {
+        // Date
+        if(!empty($_POST['rdvDate'])){
+            $date = date('Y-d-m', strtotime(htmlspecialchars($_POST['rdvDate'])));
+        }else {
+            $formErrors['rdvDAte'] = 'Veuillez renseigner une date';
+        }
+        // Heure
+        if(isset($_POST['rdvHour'])){
+            $hour = htmlspecialchars($_POST['rdvHour']);
+        }else {
+            $formErrors['rdvDAte'] = 'Veuillez renseigner une heure';
+        }
+        
+        if(empty($formErrors)) {
+            $dateHourInput = $date . ' ' . $hour; //0000-00-00 00:00:00, on concatene pour obtenir le format SQL pour dateTime
+            $appointment->dateHour = $dateHourInput; //$appointment = nouvelle instance de la classe appointment 
+            $appointment->idPatients = $patient->id; //
+            $appointment->addAppointment();
+            var_dump($patient->id);
+        }else {
+            $errorAddRdv = 'Une erreur est survenue, merci de vérifier si votre saisie est correcte. Si l\'erreur persiste, merci de contacter le service technique.';
+        }
+    }
+} 

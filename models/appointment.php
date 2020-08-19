@@ -11,7 +11,7 @@ class appointment {
         try
         {
             // Récupération de la db dans une variable
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
         }
         catch (Exception $e)
         {
@@ -23,8 +23,9 @@ class appointment {
     /* Création d'une méthode permettant de préparer une requête pour ajouter un rendez-vous dans la bdd.
     On utilise prepare dans le cas où on utilise des Marqueurs Nominatifs (':dateHour') pour éviter les failles de sécurité,
     qui est toujours accompagné d'un bindValue permettant de lier une valeur au M.N. que l'on récupère dans la classe avec
-    $this->nom de la variable, + la sécurité. 
-    Pour finir, on exécute avec return et le nom de la variable de la requête. */
+    $this->nom de la variable (objet de la classe), + la sécurité. 
+    Pour finir, on exécute avec return et le nom de la variable de la requête. 
+    ->mot() c'est une méthode et ->mot c'est un attribut */
     public function addAppointment() {
         $addAppointmentQuery = $this->db->prepare(
         'INSERT INTO 
