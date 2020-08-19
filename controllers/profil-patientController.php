@@ -12,14 +12,14 @@ if(isset($_GET['id'])) {
     //on stock la valeur de $_GET['id'] dans la variable id de l'objet patient 
     $patient->id = htmlspecialchars($_GET['id']);
     //on vérifie avec la méthode checkPatientExistById que notre patient existe dans notre BDD.
-        if ($patient->checkPatientExistById() == 1) {
-            //si le patient existe, on execute la méthode getPatientInfo. 
-            $showPatientInfo = $patient->getPatientInfo();
-        }else {
-            //redirige vers la page liste_patients
-            header ('Location: index.php?content=liste-patients');
-            exit;
-        }
+    if ($patient->checkPatientExistById() == '1') {
+        //si le patient existe, on execute la méthode getPatientInfo. 
+        $showPatientInfo = $patient->getPatientInfo();
+    }else {
+        //redirige vers la page liste-patients
+        header ('Location: index.php?content=liste-patients');
+        exit;
+    }
 }
 
 if(isset($_POST['editProfil'])){
@@ -74,7 +74,7 @@ if(isset($_POST['editProfil'])){
             $formErrors['birthdate'] = 'Merci de renseigner votre date de naissance';
         }
         
-        //MAJ
+        //MAJ du patient
         if(empty($formErrors)){
                 $patient->id = htmlspecialchars($showPatientInfo->id);
                 if($patient->editPatientInfo()){
