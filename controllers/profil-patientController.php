@@ -5,8 +5,11 @@ $patternPhone = '%^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$%';
 $regexbirthdate = '%^\d{1,2}\/\d{1,2}\/\d{4}$%';
 $formErrors = array();
 
+
 //on instancie la classe patient dans $patient
 $patient = new patient();
+$patient->id = htmlspecialchars($_GET['id']);
+$showAppointmentById = $patient->getPatientAppointments();  
 
 if(!empty($_GET['id'])) {
     //on stock la valeur de $_GET['id'] dans l'attribut id de l'objet patient 
@@ -17,7 +20,7 @@ if(!empty($_GET['id'])) {
         $showPatientInfo = $patient->getPatientInfo();
     }else {
         //redirige vers la page liste-patients
-        header ('Location: index.php?content=liste-patients');
+        header ('Location: liste-patients.php');
         exit;
     }
 }

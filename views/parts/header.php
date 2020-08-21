@@ -51,11 +51,9 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="<?= ($_SERVER['REQUEST_URI'] == '/' || $_SERVER['REQUEST_URI'] == '/index.php' ) ? 'views' : '../views' ?>/ajout-rendezvous.php">Ajout rendez-vous</a>
               <a class="dropdown-item" href="<?= ($_SERVER['REQUEST_URI'] == '/' || $_SERVER['REQUEST_URI'] == '/index.php' ) ? 'views' : '../views' ?>/liste-rendezvous.php">Liste des rendez-vous</a>
-              <a class="dropdown-item" href="<?= ($_SERVER['REQUEST_URI'] == '/' || $_SERVER['REQUEST_URI'] == '/index.php' ) ? 'views' : '../views' ?>/rendezvous.php">Rendez-vous</a>
             </div>
           </li>
         </ul>
       </div>
     </nav>
   </div>
-  <!-- Contenu-->

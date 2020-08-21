@@ -4,7 +4,7 @@ include '../models/patient.php';
 include '../controllers/profil-patientController.php';
 
 ?>
-<h1 class="text-center">Profil de <?= $showPatientInfo->firstname . ' ' . $showPatientInfo->lastname ?></h1>
+<h1 class="text-center mt-5">Profil de <?= $showPatientInfo->firstname . ' ' . $showPatientInfo->lastname ?></h1>
 <div class="row justify-content-around">
     <div class="col-5 border border-dark rounded shadow pt-3 my-5">
         <p><?= isset($addPatientMessage) ? $addPatientMessage : '' ?></p>
@@ -46,6 +46,10 @@ include '../controllers/profil-patientController.php';
                 <li>Adresse mail : <?= $showPatientInfo->mail ?></li>
             </ul>
             <a href="<?= $_SERVER['REQUEST_URI'] ?>&edit=true" class="btn btn-primary">Modifier</a>
+            <?php
+                foreach ($showAppointmentById as $appointment) { ?>
+                    <p><?='Rendez-vous fixé le : ' . $appointment->date . ' à ' . $appointment->hour ?></p>
+               <?php } ?>
         <?php } ?>
     </div>
 </div>

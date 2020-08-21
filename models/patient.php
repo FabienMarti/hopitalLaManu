@@ -171,11 +171,13 @@ public function getAllPatientsInfo(){
         $getPatientAppointmentsQuery = $this->db->prepare(
             'SELECT 
                 `pts`.`id`
-                ,`dateHour`
+                , DATE_FORMAT(`dateHour`, \'%d/%m/%Y\') AS `date`
+                , DATE_FORMAT(`dateHour`, \'%H:%i\') AS `hour`
             FROM
                 `patients` AS `pts`
             INNER JOIN `appointments` AS `apt` ON `pts`.`id` = `apt`.`idPatients`
             WHERE `pts`.`id` = :id
+            ORDER BY `date` ASC
             ');
         $getPatientAppointmentsQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
         $getPatientAppointmentsQuery->execute();

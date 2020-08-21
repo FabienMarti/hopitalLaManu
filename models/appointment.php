@@ -98,4 +98,15 @@ class appointment
         $editAppointmentByIdQuery->bindValue('id', $this->id, PDO::PARAM_INT);
         return $editAppointmentByIdQuery->execute();
     }
+
+    public function deleteAppointmentById(){
+        $deleteAppointmentByIdQuery = $this->db->prepare(
+            'DELETE FROM
+                `appointments`
+            WHERE 
+                `id` = :id
+            ');
+            $deleteAppointmentByIdQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
+            return $deleteAppointmentByIdQuery->execute();
+    }
 }
