@@ -14,7 +14,7 @@ class patient{
         try
         {
             //récupération de la db dans une variable
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
         }
         catch (Exception $e)
         {
@@ -167,5 +167,18 @@ public function getAllPatientsInfo(){
         }
     }
 
-    
+    public function getPatientAppointments(){
+        $getPatientAppointmentsQuery = $this->db->prepare(
+            'SELECT 
+                `pts`.`id`
+                ,`dateHour`
+            FROM
+                `patients` AS `pts`
+            INNER JOIN `appointments` AS `apt` ON `pts`.`id` = `apt`.`idPatients`
+            WHERE `pts`.`id` = :id
+            ');
+        $getPatientAppointmentsQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $getPatientAppointmentsQuery->execute();
+        return $getPatientAppointmentsQuery->fetchAll(PDO::FETCH_OBJ);
+    } 
 }
