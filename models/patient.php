@@ -75,6 +75,8 @@ public function getAllPatientsInfo(){
                 `id`
                 , `lastname`
                 , `firstname`
+                , `mail`
+                , DATE_FORMAT (`birthdate`, \'%d/%m/%Y\') AS `birthdateFR`
             FROM
                 `patients`
             ORDER BY `lastname`

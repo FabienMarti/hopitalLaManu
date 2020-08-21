@@ -1,6 +1,8 @@
 <?php 
-    include 'models/patient.php';
-    include 'controllers/ajout-patientController.php'; 
+  include 'parts/header.php';
+
+    include '../models/patient.php';
+    include '../controllers/ajout-patientController.php'; 
      
 ?>
 <p class="text-center mt-5"><?= isset($addPatientMessage) ? $addPatientMessage : '' ?></p>
@@ -59,3 +61,4 @@
         <input class="btn formBtn" type="submit" value="Enregistrer" name="addPatient" />
     </div>
 </form>
+<?php include 'parts/footer.php'; ?>

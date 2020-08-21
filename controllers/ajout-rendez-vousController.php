@@ -1,84 +1,52 @@
 <?php
-$patternGroup = '%^([A-Z]{1}[a-zÀ-ÖØ-öø-ÿ]+)([\-\ ]{1}[A-Z]{1}[a-zÀ-ÖØ-öø-ÿ]+)*$%'; // Regex pour plusieurs champs
+$regexDate = '%^[0-9]{4}-[0-9]{2}-[0-9]{2}$%';
+$regexHour = '%^(09|1([0-7])):(00|15|30|45)$%';
+$formErrors = array(); //création d'un tableau
 
 $patient = new patient();
-$appointment = new appointment();
+$patientList = $patient->getAllPatientsInfo();
 
+if(isset($_POST['addAppointment'])){
+    $appointment = new appointment();
 
-$formErrors = array();
-
-$patientExists = false;
-
-if(isset($_POST['searchPatient'])) {
-    if(!empty($_POST)) {
-        //Nom
-        if (!empty($_POST['lastname'])) {
-            // Si la valeur est présente dans le tableau 
-            if (preg_match($patternGroup, $_POST['lastname'])) {
-                $patient->lastname = htmlspecialchars($_POST['lastname']);
-            }else {
-                $formErrors['lastname'] = 'Votre nom de famille est incorrect, exemple : Dupont, De-Sousa';
+    if(!empty($_POST['date'])){
+        if(preg_match($regexDate,$_POST['date'])){
+            $dateExplode = explode('-', $_POST['date']);
+            if(!checkdate($dateExplode[1],$dateExplode[2],$dateExplode[0])){
+                $formErrors['date'] = 'Veuillez renseigner une date valide.';
             }
-        }else {
-            $formErrors['lastname'] = 'Veuillez renseigner votre nom de famille';
+        }else{
+            $formErrors['date'] = 'Veuillez renseigner une date au format : jj/mm/aaaa.';
         }
-
-        //Prénom
-        if (!empty($_POST['firstname'])) {
-            if (preg_match($patternGroup, $_POST['firstname'])) {
-                $patient->firstname = htmlspecialchars($_POST['firstname']);
-            }else {
-                $formErrors['firstname'] = 'Votre prénom est incorrect, exemple : Jean, Marie-Anne';
-            }
-        }else {
-            $formErrors['firstname'] = 'Veuillez renseigner votre prénom';
+    }else{
+        $formErrors['date'] = 'Veuillez renseigner une date.';
+    }
+    
+    if(!empty($_POST['hour'])){
+        if(!preg_match($regexHour, $_POST['hour'])) {
+            $formErrors['hour'] = 'Veuillez renseigner une heure valide.';
         }
+    }else{
+        $formErrors['hour'] = 'Veuillez renseigner une heure.';
+    }
 
-        //adresse mail
-        if (!empty($_POST['mail'])) {
-            if (filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) {
-                $patient->mail = htmlspecialchars($_POST['mail']);
-            }else {
-                $formErrors['mail'] = 'Votre adresse mail est incorrect, exemple : jean-dupont@gmail.com';
-            }
-        }else {
-        $formErrors['mail'] = 'Veuillez renseigner votre adresse mail';
+    if(!empty($_POST['idPatients'])){
+        $patient->id = htmlspecialchars($_POST['idPatients']);
+        if($patient->checkPatientExistById() == 1){
+            $appointment->idPatients = $_POST['idPatients'];
+        }else{
+            $formErrors['idPatients'] = 'Le patient sélectionné n\'existe pas.';
         }
+    }else{
+        $formErrors['idPatients'] = 'Veuillez sélectionner un patient.';
+    }
 
-        if(empty($formErrors)){
-            if($patient->getPatientByName()){
-                $patientId = $patient->id;
-                $patientExists = true;
-            }else{
-                $message = 'Une erreur est survenue, merci de vérifier si le patient existe ou si votre saisie est correcte';
-            }
+    if(count($formErrors) == 0){
+        $appointment->dateHour = $_POST['date'] . ' ' . $_POST['hour'];
+        if($appointment->addAppointment()){
+            $messageSuccess = 'Le rendez-vous a bien été ajouté.';
+        }else{
+            $messageFail = 'Le rendez-vous n\'a pas été ajouté.'; 
         }
     }
 }
-
-if(isset($_POST['addRdv'])) {
-    if(!empty($_POST)) {
-        // Date
-        if(!empty($_POST['rdvDate'])){
-            $date = date('Y-d-m', strtotime(htmlspecialchars($_POST['rdvDate'])));
-        }else {
-            $formErrors['rdvDAte'] = 'Veuillez renseigner une date';
-        }
-        // Heure
-        if(isset($_POST['rdvHour'])){
-            $hour = htmlspecialchars($_POST['rdvHour']);
-        }else {
-            $formErrors['rdvDAte'] = 'Veuillez renseigner une heure';
-        }
-        
-        if(empty($formErrors)) {
-            $dateHourInput = $date . ' ' . $hour; //0000-00-00 00:00:00, on concatene pour obtenir le format SQL pour dateTime
-            $appointment->dateHour = $dateHourInput; //$appointment = nouvelle instance de la classe appointment 
-            $appointment->idPatients = $patient->id; //
-            $appointment->addAppointment();
-            var_dump($patient->id);
-        }else {
-            $errorAddRdv = 'Une erreur est survenue, merci de vérifier si votre saisie est correcte. Si l\'erreur persiste, merci de contacter le service technique.';
-        }
-    }
-} 

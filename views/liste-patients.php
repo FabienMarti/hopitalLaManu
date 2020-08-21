@@ -1,6 +1,8 @@
 <?php
-include 'models/patient.php';
-include 'controllers/liste-patientsController.php';
+  include 'parts/header.php';
+
+include '../models/patient.php';
+include '../controllers/liste-patientsController.php';
 ?>
 <h1 class="text-center">Liste des patients</h1>
 <div class="row justify-content-around">
@@ -13,3 +15,4 @@ include 'controllers/liste-patientsController.php';
                 }?>
     </table>
 </div>
+<?php include 'parts/footer.php'; ?>

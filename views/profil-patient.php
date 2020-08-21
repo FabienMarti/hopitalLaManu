@@ -1,6 +1,7 @@
 <?php
-include 'models/patient.php';
-include 'controllers/profil-patientController.php';
+include 'parts/header.php';
+include '../models/patient.php';
+include '../controllers/profil-patientController.php';
 
 ?>
 <h1 class="text-center">Profil de <?= $showPatientInfo->firstname . ' ' . $showPatientInfo->lastname ?></h1>
@@ -13,23 +14,23 @@ include 'controllers/profil-patientController.php';
                 <form action="" method="POST">
                     <div class="form-group">
                         <label for="lastname">Nom : </label>
-                        <input class="form-control" type="text" id="lastname" name="lastname" value="<?= $showPatientInfo->lastname ?>" />
+                        <input class="form-control" type="text" id="lastname" name="lastname" value="<?= isset($_POST['lastname']) ? $_POST['lastname'] : $showPatientInfo->lastname ?>" />
                     </div>
                     <div class="form-group">
                         <label for="firstname">Prénom : </label>
-                        <input class="form-control" type="text" id="firstname" name="firstname" value="<?= $showPatientInfo->firstname ?>" />
+                        <input class="form-control" type="text" id="firstname" name="firstname" value="<?= isset($_POST['firstname']) ? $_POST['firstname'] : $showPatientInfo->firstname ?>" />
                     </div>
                     <div class="form-group">
                         <label for="birthdate">Date de naissance : </label>
-                        <input class="form-control" type="text" id="birthdate" name="birthdate" value="<?= $showPatientInfo->birthdateFR ?>" />
+                        <input class="form-control" type="text" id="birthdate" name="birthdate" value="<?= isset($_POST['birthdate']) ? $_POST['birthdate'] : $showPatientInfo->birthdateFR ?>" />
                     </div>
                     <div class="form-group">
                         <label for="phone">Numéro de téléphone : </label>
-                        <input class="form-control" type="text" id="phone" name="phone" value="<?= $showPatientInfo->phone ?>" />
+                        <input class="form-control" type="text" id="phone" name="phone" value="<?= isset($_POST['phone']) ? $_POST['phone'] : $showPatientInfo->phone ?>" />
                     </div>
                     <div class="form-group">
                         <label for="mail">Adresse mail : </label>
-                        <input class="form-control" type="email" id="mail" name="mail" value="<?= $showPatientInfo->mail ?>" />
+                        <input class="form-control" type="email" id="mail" name="mail" value="<?= isset($_POST['mail']) ? $_POST['mail'] : $showPatientInfo->mail ?>" />
                     </div>
                     <div class="form-group d-flex justify-content-center">
                         <input type="submit" class="btn btn-info mb-2" name="editProfil" value="Enregistrer" />
@@ -48,3 +49,4 @@ include 'controllers/profil-patientController.php';
         <?php } ?>
     </div>
 </div>
+<?php include 'parts/footer.php'; ?>
