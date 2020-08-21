@@ -19,27 +19,27 @@ include_once '../controllers/liste-rendezvousController.php';
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Confirmez-vous la suppression ?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <label for="recipient-name" class="col-form-label"></label>
-                <input type="hidden" class="form-control" name="recipient-name" id="recipient-name" value="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmez-vous la suppression ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="text-center">
-                <input type="submit" name="deleteProfil" value="Supprimer" class="btn btn-danger" />
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <div class="modal-body">
+                <form method="POST" action="">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label"></label>
+                        <input type="hidden" class="form-control" name="recipient-name" id="recipient-name" value="" />
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" name="deleteProfil" value="Supprimer" class="btn btn-danger" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    </div>
+                </form>
             </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 <?php include 'parts/footer.php'; ?>
