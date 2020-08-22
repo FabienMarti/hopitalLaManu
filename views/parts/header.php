@@ -18,7 +18,7 @@
 <body class="shadow mb-5 container p-0">
   <div id="headerBG" class="row m-0">
     <div class="col-4">
-      <img id="logo" class="px-0 img-fluid" src="assets/img/logo.png" alt="" />
+      <img id="logo" class="px-0 img-fluid" src="<?= ($_SERVER['REQUEST_URI'] == '/' || $_SERVER['REQUEST_URI'] == '/index.php' ) ? '' : '../' ?>assets/img/logo.png" alt="" />
     </div>
     <div class="col text-white text-right my-auto font-weight-bold">
       <ul style="list-style: none;">
