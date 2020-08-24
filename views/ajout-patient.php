@@ -1,9 +1,7 @@
 <?php 
-  include 'parts/header.php';
-
+    include 'parts/header.php';
     include '../models/patient.php';
     include '../controllers/ajout-patientController.php'; 
-     
 ?>
 <p class="text-center mt-5"><?= isset($addPatientMessage) ? $addPatientMessage : '' ?></p>
 <form action="" method="POST" class="container">

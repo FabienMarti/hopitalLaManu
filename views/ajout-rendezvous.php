@@ -5,16 +5,19 @@ require_once '../models/appointment.php';
 require_once '../controllers/ajout-rendez-vousController.php';
 ?>
 <body>
+
     <?php if(isset($messageSuccess)){ ?>
         <div class="alert alert-success" role="alert">
           <?= $messageSuccess ?>
         </div>
-    <?php } ?>
-    <?php if(isset($messageFail)){ ?>
+    <?php }
+
+    if(isset($messageFail)){ ?>
         <div class="alert alert-danger" role="alert">
           <?= $messageFail ?>
         </div>
     <?php } ?>
+
     <h1 class="text-center my-5">Ajouter un rendez-vous</h1>
     <div class="row justify-content-center">
             <form class="col-6 mb-5" method="POST" action="ajout-rendezvous.php">

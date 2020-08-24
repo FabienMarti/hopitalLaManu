@@ -3,22 +3,17 @@ $regexDate = '%^[0-9]{4}-[0-9]{2}-[0-9]{2}$%';
 $regexHour = '%^(09|1([0-7])):(00|15|30|45)$%';
 $formErrors = array();
 
-//créé une nouvelle instance temporaire qui se ré-initialise à l'actualisation de la page
+// On créé une nouvelle instance de la classe dans la variable $appointment qui devient un objet
 $appointment = new appointment();
 
-
 if(!empty($_GET['id'])) {
-    //on stock la valeur de $_GET['id'] dans l'attribut id de l'objet patient 
+    // On stock la valeur de $_GET['id'] dans l'attribut id de l'objet patient 
     $appointment->id = htmlspecialchars($_GET['id']);
-    //on vérifie avec la méthode checkAppointmentExistsById que notre rdv existe dans notre BDD.
+    // On vérifie avec la méthode checkAppointmentExistsById que notre rdv existe dans notre BDD.
     if($appointment->checkAppointmentExistsById() == '1') {
-        //si le rdv existe, on execute la méthode getAllAppointmentsById. 
         $showAppointment = $appointment->getAllAppointmentsById();
-        $datehourArray = explode(' ', $showAppointment->dateHour);
-        $date = $datehourArray[0];
-        $hour = date('H:i', strtotime($datehourArray[1]));
     }else{
-        //redirige vers la page liste-patients
+        // Redirige vers la page liste-patients
         header ('Location: liste-rendezvous.php');
         exit;
     }

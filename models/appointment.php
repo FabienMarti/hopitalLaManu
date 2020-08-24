@@ -17,7 +17,7 @@ class appointment
             die($error->getMessage());
         }
     }
-    //Verif Appointments Exist
+    //Vérif si rdv existe
     public function checkAppointmentExistsById(){
         $queryPrepare = $this->db->prepare( 
             'SELECT 
@@ -73,7 +73,8 @@ class appointment
                 , DATE_FORMAT (`birthdate`, \'%d/%m/%Y\') AS `birthdateFR`
                 , `phone`
                 , `mail`
-                ,`dateHour`
+                , DATE_FORMAT(`dateHour`, \'%d/%m/%Y\') AS `date`
+                , DATE_FORMAT(`dateHour`, \'%H:%i\') AS `hour`
                 ,`idPatients`
             FROM
                 `appointments` AS `apt`
@@ -111,7 +112,7 @@ class appointment
             return $deleteAppointmentByIdQuery->execute();
     }
 
-    //Supprimer un rendez vous à partir de l'ID du patient
+    //Supprime un rendez vous à partir de l'ID du patient
     public function deleteAppointmentByPatient(){
         $deleteAppointmentByIdQuery = $this->db->prepare(
             'DELETE FROM
