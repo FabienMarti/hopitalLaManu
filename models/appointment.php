@@ -99,6 +99,7 @@ class appointment
         return $editAppointmentByIdQuery->execute();
     }
 
+    //Supprime un rendez vous à partir de l'ID du rendez-vous
     public function deleteAppointmentById(){
         $deleteAppointmentByIdQuery = $this->db->prepare(
             'DELETE FROM
@@ -107,6 +108,18 @@ class appointment
                 `id` = :id
             ');
             $deleteAppointmentByIdQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
+            return $deleteAppointmentByIdQuery->execute();
+    }
+
+    //Supprimer un rendez vous à partir de l'ID du patient
+    public function deleteAppointmentByPatient(){
+        $deleteAppointmentByIdQuery = $this->db->prepare(
+            'DELETE FROM
+                `appointments`
+            WHERE 
+                `idPatients` = :idPatients
+            ');
+            $deleteAppointmentByIdQuery->bindValue(':idPatients', $this->idPatients, PDO::PARAM_INT);
             return $deleteAppointmentByIdQuery->execute();
     }
 }

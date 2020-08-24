@@ -183,4 +183,15 @@ public function getAllPatientsInfo(){
         $getPatientAppointmentsQuery->execute();
         return $getPatientAppointmentsQuery->fetchAll(PDO::FETCH_OBJ);
     } 
+
+    public function deletePatientById(){
+        $deletePatientByIdQuery = $this->db->prepare(
+            'DELETE FROM
+                `patients`
+            WHERE 
+                `id` = :id
+            ');
+            $deletePatientByIdQuery->bindValue(':id', $this->id, PDO::PARAM_INT);
+            return $deletePatientByIdQuery->execute();
+    }
 }
