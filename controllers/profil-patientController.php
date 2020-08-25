@@ -5,21 +5,18 @@ $patternPhone = '%^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$%';
 $regexbirthdate = '%^\d{1,2}\/\d{1,2}\/\d{4}$%';
 $formErrors = array();
 
-
-//on instancie la classe patient dans $patient
 $patient = new patient();
 $patient->id = htmlspecialchars($_GET['id']);
-$showAppointmentById = $patient->getPatientAppointments();  
 
 if(!empty($_GET['id'])) {
-    //on stock la valeur de $_GET['id'] dans l'attribut id de l'objet patient 
+    // On stock la valeur de $_GET['id'] dans l'attribut id de l'objet patient 
     $patient->id = htmlspecialchars($_GET['id']);
-    //on vérifie avec la méthode checkPatientExistById que notre patient existe dans notre BDD.
+    // On vérifie avec la méthode checkPatientExistById que notre patient existe dans notre BDD.
     if ($patient->checkPatientExistById() == '1') {
-        //si le patient existe, on execute la méthode getPatientInfo. 
+        // Si le patient existe, on exécute la méthode getPatientInfo(). 
         $showPatientInfo = $patient->getPatientInfo();
     }else {
-        //redirige vers la page liste-patients
+        // Redirige vers la page liste-patients
         header ('Location: liste-patients.php');
         exit;
     }
@@ -77,14 +74,16 @@ if(isset($_POST['editProfil'])){
             $formErrors['birthdate'] = 'Merci de renseigner votre date de naissance';
         }
         
-        //MAJ du patient (exercice 4)
+        // Modification du patient
         if(empty($formErrors)){
-                $patient->id = htmlspecialchars($showPatientInfo->id);
-                if($patient->editPatientInfo()){
-                    $addPatientMessage = 'Le patient a bien été modifié.';
-                }else {
-                    $addPatientMessage = 'Une erreur est survenue pendant l\'enregistrement. Veuillez contacter le service informatique.';
-                }
+            // On récupère l'id du patient et on le stock dans l'attribut id de l'objet patient
+            $patient->id = htmlspecialchars($showPatientInfo->id);
+            if($patient->editPatientInfo()){
+                $addPatientMessage = 'Le patient a bien été modifié.';
+            }else {
+                $addPatientMessage = 'Une erreur est survenue pendant l\'enregistrement. Veuillez contacter le service informatique.';
             }
         }
     }
+}
+$showAppointmentById = $patient->getPatientAppointments();  

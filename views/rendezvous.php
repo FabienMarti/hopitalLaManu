@@ -2,14 +2,16 @@
 include 'parts/header.php'; 
 include '../models/appointment.php';
 include '../controllers/rendezvousController.php';
- if(isset($messageSuccess)){ ?>
+
+    if(isset($messageSuccess)){ ?>
         <div class="alert alert-success" role="alert">
-          <?= $messageSuccess ?>
+            <?= $messageSuccess ?>
         </div>
-    <?php } ?>
-    <?php if(isset($messageFail)){ ?>
+    <?php }
+    
+    if(isset($messageFail)){ ?>
         <div class="alert alert-danger" role="alert">
-          <?= $messageFail ?>
+            <?= $messageFail ?>
         </div>
     <?php } ?>
     
@@ -24,14 +26,14 @@ include '../controllers/rendezvousController.php';
                 <form action="" method="POST">
                     <div class="form-group">
                         <label for="date">Date de rendez-vous : </label>
-                        <input type="date" id="date" name="date" value="<?= isset($_POST['date']) ? $_POST['date'] : $date ?>">
+                        <input type="date" id="date" name="date" value="<?= isset($_POST['date']) ? $_POST['date'] : $showAppointment->date ?>">
                         <?php if(isset($formErrors['date'])) { ?>
                             <p><?= $formErrors['date'];
                         } ?></p>
                     </div>
                     <div class="form-group">
                         <label for="hour">Heure de rendez-vous : </label>
-                        <input type="time" id="hour" name="hour" value="<?= isset($_POST['hour']) ? $_POST['hour'] : $hour ?>">
+                        <input type="time" id="hour" name="hour" value="<?= isset($_POST['hour']) ? $_POST['hour'] : $showAppointment->hour ?>">
                         <?php if(isset($formErrors['hour'])) { ?>
                             <p><?= $formErrors['hour'];
                         } ?></p>

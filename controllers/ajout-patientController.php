@@ -5,11 +5,15 @@ $patternPhone = '%^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$%';
 $regexbirthdate = '%^\d{1,2}\/\d{1,2}\/\d{4}$%';
 $formErrors = array();
 
+// Si le formulaire est envoyé
 if(isset($_POST['addPatient'])) {
+    // On créé une nouvelle instance de la classe dans la variable $patient
     $patient = new patient();
+    // Si 'lastname' contient une valeur
     if (!empty($_POST['lastname'])) {
-        // Si la valeur est présente dans le tableau 
+        // Et que la valeur correspond à la regex
         if (preg_match($patternGroup, $_POST['lastname'])) {
+            // On stock la valeur de 'lastname' dans l'attribut de $patient
             $patient->lastname = htmlspecialchars($_POST['lastname']);
         }else {
             $formErrors['lastname'] = 'Votre nom de famille est incorrect, exemple : Dupont, De-Sousa';
@@ -55,10 +59,12 @@ if(isset($_POST['addPatient'])) {
         $formErrors['birthDate'] = 'Merci de renseigner votre date de naissance';
     }
     
+    // Si le tableau d'erreur est vide
     if(empty($formErrors)){
-        // Exécute la méthode checkPatientExists qui retourne 1 si le patient existe déjà
+        // Exécute la méthode checkPatientExists qui retourne 1 si le patient existe déjà ou 0 s'il n'existe pas
+        // Si aucun patient identique n'existe
         if(!$patient->checkPatientExists()) {
-            //Exécute la méthode addPatient
+            // On exécute la méthode addPatient dans $patient (se trouvant dans le model patient)
             if($patient->addPatient()){
             $addPatientMessage = 'Le patient a bien été enregistré.';
             }else {
