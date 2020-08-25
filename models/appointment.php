@@ -111,6 +111,20 @@ class appointment
             return $deleteAppointmentByIdQuery->execute();
     }
 
+    public function checkAppointmentExistsByIdPatient(){
+        $appointmentExistsByIdPatientQuery = $this->db->prepare(
+            'SELECT 
+                COUNT(`idPatients`) AS `isAppointmentExists`
+            FROM
+                `appointments`
+            WHERE
+                `idPatients` = :idPatients'
+        );
+        $appointmentExistsByIdPatientQuery->bindValue(':idPatients', $this->idPatients, PDO::PARAM_INT);
+        $appointmentExistsByIdPatientQuery->execute();
+        $data = $appointmentExistsByIdPatientQuery->fetch(PDO::FETCH_OBJ);
+        return $data->isAppointmentExists;
+    }
     //Supprimer un rendez vous à partir de l'ID du patient
     public function deleteAppointmentByPatient(){
         $deleteAppointmentByIdQuery = $this->db->prepare(
