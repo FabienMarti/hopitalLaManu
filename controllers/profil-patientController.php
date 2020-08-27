@@ -4,9 +4,8 @@ $patternMail = '%^[a-zA-Z0-9\._\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,10}$%';
 $patternPhone = '%^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$%';
 $regexbirthdate = '%^\d{1,2}\/\d{1,2}\/\d{4}$%';
 $formErrors = array();
-
+$appointment = new appointment();
 $patient = new patient();
-$patient->id = htmlspecialchars($_GET['id']);
 
 if(!empty($_GET['id'])) {
     // On stock la valeur de $_GET['id'] dans l'attribut id de l'objet patient 
@@ -20,6 +19,9 @@ if(!empty($_GET['id'])) {
         header ('Location: liste-patients.php');
         exit;
     }
+    $appointment->idPatients = $patient->id;
+    $showAppointmentById = $appointment->getPatientAppointmentsByIdPatients();
+
 }
 
 if(isset($_POST['editProfil'])){
@@ -86,4 +88,3 @@ if(isset($_POST['editProfil'])){
         }
     }
 }
-$showAppointmentById = $patient->getPatientAppointments();  

@@ -12,7 +12,7 @@ class appointment
 
     public function __construct(){
         try {
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'Mealya', 'Naabpeon020895');
         } catch (Exception $error) {
             die($error->getMessage());
         }
@@ -112,7 +112,21 @@ class appointment
             return $deleteAppointmentByIdQuery->execute();
     }
 
-    //Supprime un rendez vous à partir de l'ID du patient
+    public function checkAppointmentExistsByIdPatient(){
+        $appointmentExistsByIdPatientQuery = $this->db->prepare(
+            'SELECT 
+                COUNT(`idPatients`) AS `isAppointmentExists`
+            FROM
+                `appointments`
+            WHERE
+                `idPatients` = :idPatients'
+        );
+        $appointmentExistsByIdPatientQuery->bindValue(':idPatients', $this->idPatients, PDO::PARAM_INT);
+        $appointmentExistsByIdPatientQuery->execute();
+        $data = $appointmentExistsByIdPatientQuery->fetch(PDO::FETCH_OBJ);
+        return $data->isAppointmentExists;
+    }
+    //Supprimer un rendez vous à partir de l'ID du patient
     public function deleteAppointmentByPatient(){
         $deleteAppointmentByIdQuery = $this->db->prepare(
             'DELETE FROM
@@ -123,4 +137,20 @@ class appointment
             $deleteAppointmentByIdQuery->bindValue(':idPatients', $this->idPatients, PDO::PARAM_INT);
             return $deleteAppointmentByIdQuery->execute();
     }
+
+    public function getPatientAppointmentsByIdPatients(){
+        $getPatientAppointmentsQuery = $this->db->prepare(
+            'SELECT 
+                 DATE_FORMAT(`dateHour`, \'%d/%m/%Y\') AS `date`
+                , DATE_FORMAT(`dateHour`, \'%H:%i\') AS `hour`
+            FROM
+                `appointments`
+            WHERE `idPatients` = :idPatients
+            ORDER BY `date` ASC
+            ');
+        $getPatientAppointmentsQuery->bindValue(':idPatients', $this->idPatients, PDO::PARAM_INT);
+        $getPatientAppointmentsQuery->execute();
+        return $getPatientAppointmentsQuery->fetchAll(PDO::FETCH_OBJ);
+    } 
+    
 }

@@ -1,6 +1,7 @@
 <?php
 include 'parts/header.php';
 include '../models/patient.php';
+include '../models/appointment.php';
 include '../controllers/profil-patientController.php';
 
 ?>
