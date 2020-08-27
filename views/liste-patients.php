@@ -5,6 +5,21 @@ include '../models/appointment.php';
 include '../controllers/liste-patientsController.php';
 ?>
 <h1 class="text-center">Liste des patients</h1>
+<?php 
+if(isset($messageSuccess)){ ?>
+        <div class="alert alert-success" role="alert">
+          <?= $messageSuccess ?>
+        </div>
+    <?php } ?>
+    <?php if(isset($messageFail)){ ?>
+        <div class="alert alert-danger" role="alert">
+          <?= $messageFail ?>
+        </div>
+    <?php } ?>
+<form action="" method="POST" class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+</form>
 <div class="row justify-content-around">
     <table class="table table-striped border col-6 mt-5">
             <?php 
