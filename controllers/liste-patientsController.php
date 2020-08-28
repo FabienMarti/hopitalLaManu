@@ -18,9 +18,6 @@ if(isset($_POST['deleteProfil'])){
     //Si le patient existe
     if($patient->checkPatientExistById()){
         //Si le patient a des RDVs
-        if($appointment->checkAppointmentExistsByIdPatient()){
-            $appointment->deleteAppointmentByPatient();
-        }
         $patient->deletePatientById();
         $messageSuccess = 'Le patient a bien été supprimé.';
     }else{
