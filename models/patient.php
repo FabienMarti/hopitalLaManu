@@ -90,7 +90,6 @@ public function getAllPatientsInfo($searchArray = array()){
             , `lastname`
             , `firstname`
             , `mail`
-            , DATE_FORMAT (`birthdate`, \'%d/%m/%Y\') AS `birthdateFR`
         FROM
             `patients` ' 
         . (isset($where) ? $where : '') . '
