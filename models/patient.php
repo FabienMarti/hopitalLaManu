@@ -14,7 +14,7 @@ class patient{
         try
         {
             //récupération de la db dans une variable
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
         }
         catch (Exception $e)
         {
@@ -66,23 +66,44 @@ public function checkPatientExists(){
         return $data->isPatientExists;
     }
 
-/******************* CRUD -> R (read) -- LECTURE TOUTE LA TABLE PATIENTS *******************/
+/******************* CRUD -> R (read) -- LECTURE TOUTE LA TABLE PATIENTS ET PERMET UN FILTRAGE MULTIPLE *******************/
 //Query quand l'utilisateur n'envoie pas lui même de données, Prepare -- bindValue -- execute quand l'utilisateur envoie des données
 //pour passer par la sécurité PARAM et des marqueurs nominatifs.
-public function getAllPatientsInfo(){
-        $allPatientQuery = $this->db->query(
-            'SELECT
-                `id`
-                , `lastname`
-                , `firstname`
-                , `mail`
-                , DATE_FORMAT (`birthdate`, \'%d/%m/%Y\') AS `birthdateFR`
-            FROM
-                `patients`
-            ORDER BY `lastname`
-            ');
-            return $allPatientQuery->fetchAll(PDO::FETCH_OBJ);
+// % est un Joker
+
+//recherche/float que pour STRINGS
+public function getAllPatientsInfo($searchArray = array()){
+    if(count($searchArray) > 0){
+        $where = 'WHERE ';
+        foreach ($searchArray as $fieldName => $search) {
+            if(strrchr($search, '%')){
+                $whereArray[] = '`' . $fieldName . '` LIKE :' . $fieldName;
+            }else{
+                $whereArray[] = '`' . $fieldName . '` = :' . $fieldName;
+            }
+        }
+        $where .= implode(' AND ', $whereArray);
     }
+    $allPatientQuery = $this->db->prepare(
+        'SELECT
+            `id`
+            , `lastname`
+            , `firstname`
+            , `mail`
+            , DATE_FORMAT (`birthdate`, \'%d/%m/%Y\') AS `birthdateFR`
+        FROM
+            `patients` ' 
+        . (isset($where) ? $where : '') . '
+        ORDER BY `lastname`
+        ');
+        var_dump($allPatientQuery);
+        foreach ($searchArray as $fieldName => $search) { 
+            $allPatientQuery->bindValue(':' . $fieldName, $search, PDO::PARAM_STR);
+        }
+        $allPatientQuery->execute();
+        return $allPatientQuery->fetchAll(PDO::FETCH_OBJ); 
+    }
+
 /******************* CRUD -> R (read) -- VERIFIER EXISTENCE ID *******************/
     public function checkPatientExistById() {
         $checkPatientIdQuery = $this->db->prepare(

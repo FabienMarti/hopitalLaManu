@@ -24,4 +24,23 @@ if(isset($_POST['deleteProfil'])){
         $messageFail = 'Le patient sélectionné n\'exite pas.';
     }
 }
+
+if(isset($_POST['sendSearch'])){
+
+    if (!empty($_POST['searchPatientRequest'])){ 
+        $search['lastname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%'; 
+        var_dump($search);                 
+        //$search['firstname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%';             
+    }  
+
+    if (!empty($_POST['searchbydate'])){
+        $search['birthdate'] = htmlspecialchars($_POST['searchbydate']);            
+    }
+
+    $showPatientsInfo = $patient->getAllPatientsInfo($search);
+}
 $showPatientsInfo = $patient->getAllPatientsInfo();
+
+
+/*cas des INT dans recherche : on doit envoyer un tableau de tableaux ou tableau d'objet a la place d'un simple tableau
+$tableau['champSQL'][type de données]   exemple ['type']ex: STR   || ['logical']ex: OR   ||  ['value']ex: 'toto' on utilise plus d'implode() */

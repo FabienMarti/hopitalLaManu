@@ -12,7 +12,7 @@ class appointment
 
     public function __construct(){
         try {
-            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'jess', 'jessplo60');
+            $this->db = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'fmarti', 'nekrose12');
         } catch (Exception $error) {
             die($error->getMessage());
         }
