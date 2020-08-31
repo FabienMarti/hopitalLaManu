@@ -67,41 +67,45 @@ public function checkPatientExists(){
     }
 
 /******************* CRUD -> R (read) -- LECTURE TOUTE LA TABLE PATIENTS ET PERMET UN FILTRAGE MULTIPLE *******************/
-//Query quand l'utilisateur n'envoie pas lui même de données, Prepare -- bindValue -- execute quand l'utilisateur envoie des données
-//pour passer par la sécurité PARAM et des marqueurs nominatifs.
-// % est un Joker
-
-//recherche/float que pour STRINGS
-public function getAllPatientsInfo($searchArray = array()){
-    if(count($searchArray) > 0){
-        $where = 'WHERE ';
-        foreach ($searchArray as $fieldName => $search) {
-            if(strrchr($search, '%')){
-                $whereArray[] = '`' . $fieldName . '` LIKE :' . $fieldName;
-            }else{
-                $whereArray[] = '`' . $fieldName . '` = :' . $fieldName;
+    /*Query quand l'utilisateur n'envoie pas lui même de données, prepare -- bindValue -- execute quand l'utilisateur envoie des données
+    pour passer par la sécurité PARAM et des marqueurs nominatifs.
+    % est un Joker
+    recherche/float que pour STRINGS */
+    public function getAllPatientsInfo($limitArray = array(), $searchArray = array()){
+        if(count($searchArray) > 0){
+            $where = 'WHERE ';
+            foreach ($searchArray as $fieldName => $search) {
+                if(strrchr($search, '%')){
+                    $whereArray[] = '`' . $fieldName . '` LIKE :' . $fieldName;
+                }else{
+                    $whereArray[] = '`' . $fieldName . '` = :' . $fieldName;
+                }
             }
+            $where .= implode(' AND ', $whereArray);
         }
-        $where .= implode(' AND ', $whereArray);
-    }
-    $allPatientQuery = $this->db->prepare(
-        'SELECT
-            `id`
-            , `lastname`
-            , `firstname`
-            , `mail`
-        FROM
-            `patients` ' 
-        . (isset($where) ? $where : '') . '
-        ORDER BY `lastname`
-        ');
-        var_dump($allPatientQuery);
-        foreach ($searchArray as $fieldName => $search) { 
-            $allPatientQuery->bindValue(':' . $fieldName, $search, PDO::PARAM_STR);
+        $allPatientQuery = $this->db->prepare(
+            'SELECT
+                `id`
+                , `lastname`
+                , `firstname`
+                , `mail`
+                ,DATE_FORMAT(`birthdate`, \'%d/%m/%Y\') AS birthdateFR
+            FROM
+                `patients`' 
+            . (isset($where) ? $where : '') . '
+            ORDER BY `lastname` ASC '
+            . (count($limitArray) != 0 ? 'LIMIT :limit OFFSET :offset' : '')
+            );
+            foreach ($searchArray as $fieldName => $search) { 
+                $allPatientQuery->bindValue(':' . $fieldName, $search, PDO::PARAM_STR);
+            }
+            if((count($limitArray) != 0)){
+                $allPatientQuery->bindValue(':limit', $limitArray['limit'], PDO::PARAM_INT);
+                $allPatientQuery->bindValue(':offset', $limitArray['offset'], PDO::PARAM_INT);
+            }
+            $allPatientQuery->execute();
+            return $allPatientQuery->fetchAll(PDO::FETCH_OBJ); 
         }
-        $allPatientQuery->execute();
-        return $allPatientQuery->fetchAll(PDO::FETCH_OBJ); 
-    }
 
 /******************* CRUD -> R (read) -- VERIFIER EXISTENCE ID *******************/
     public function checkPatientExistById() {
@@ -117,6 +121,7 @@ public function getAllPatientsInfo($searchArray = array()){
         $data = $checkPatientIdQuery->fetch(PDO::FETCH_OBJ);
         return $data->isPatientIdExist;
     }
+
 /******************* CRUD -> R (read) -- LECTURE DE 1 PATIENT *******************/
     public function getPatientInfo() {
         $getPatientQuery = $this->db->prepare(

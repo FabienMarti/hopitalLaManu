@@ -16,7 +16,7 @@ if(isset($messageSuccess)){ ?>
           <?= $messageFail ?>
         </div>
     <?php } ?>
-<form action="" method="POST" class="form-inline my-2 my-lg-0">
+<form action="" method="POST" class="form-inline my-2 my-lg-0 text-center">
     <input class="form-control mr-sm-2" type="text" placeholder="Rechercher" aria-label="Search" name="searchPatientRequest" />
     <input type="date" name="searchbydate" />
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="sendSearch">Go</button>
@@ -27,11 +27,19 @@ if(isset($messageSuccess)){ ?>
                 foreach ($showPatientsInfo as $info) {
                     ?><tr><td>Nom : <?= $info->lastname ?></td>
                     <td>Prénom : <?= $info->firstname ?></td>
+                    <td>Date de naissance : <?= $info->birthdateFR ?></td>
                     <td><a href="profil-patient.php?id=<?= $info->id ?>" class="btn btn-primary" role="button" aria-disabled="true">Fiche</a></td>
                     <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-whatever="<?= $info->id ?>">Supprimer</button></td></tr><?php
                 }?>
     </table>
 </div>
+<a href="liste-patients.php?page=<?= $page - 1 ?>" class="btn"><</a>
+<?php
+    for ($i=1; $i < $pageNumber; $i++) { ?>
+        <a href="liste-patients.php?page=<?= $i ?>" class="btn"><?= $i ?></a>
+    <?php } 
+?>
+<a href="liste-patients.php?page=<?= $page + 1 ?>" class="btn">></a>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

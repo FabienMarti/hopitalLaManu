@@ -4,6 +4,8 @@ $patient = new patient();
 $appointment = new appointment();
 $search = array();
 
+// $pageNumber = $patient->getNumberOfPages();
+
 /* Grosse faille, si un utilisateur malveillant décide de tester des IDs dans la modale il peut supprimer
 des utilisateurs à volonté .*/
 
@@ -26,23 +28,31 @@ if(isset($_POST['deleteProfil'])){
     }
 }
 
-$showPatientsInfo = $patient->getAllPatientsInfo();
 
+
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
+}else{
+    $page = 1;
+}
+$limitArray = ['limit' => 5];
+$limitArray['offset'] = ($page * $limitArray['limit']) - $limitArray['limit'];
 if(isset($_POST['sendSearch'])){
 
     if (!empty($_POST['searchPatientRequest'])){ 
-        $search['lastname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%'; 
-        var_dump($search);                 
-        //$search['firstname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%';             
+        $search['lastname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%';                
     }  
 
     if (!empty($_POST['searchbydate'])){
         $search['birthdate'] = htmlspecialchars($_POST['searchbydate']);            
     }
-    $showPatientsInfo = $patient->getAllPatientsInfo($search);
+    $showPatientsInfo = $patient->getAllPatientsInfo($limitArray, $search);
+    $pageNumber = ceil(count($showPatientsInfo = $patient->getAllPatientsInfo(array(), $search)) / 3);
+}else{
+    $showPatientsInfo = $patient->getAllPatientsInfo($limitArray);
+    $pageNumber = ceil(count($showPatientsInfo = $patient->getAllPatientsInfo($limitArray)) / 3);
 }
-
-
+var_dump($pageNumber);
 
 /*cas des INT dans recherche : on doit envoyer un tableau de tableaux ou tableau d'objet a la place d'un simple tableau
 $tableau['champSQL'][type de données]   exemple ['type']ex: STR   || ['logical']ex: OR   ||  ['value']ex: 'toto' on utilise plus d'implode() */
