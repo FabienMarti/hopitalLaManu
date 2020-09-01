@@ -24,7 +24,7 @@ if(isset($messageSuccess)){ ?>
 <div class="row justify-content-around">
     <table class="table table-striped border col-6 mt-5">
             <?php 
-                foreach ($showPatientsInfo as $info) {
+                foreach ($list as $info) {
                     ?><tr><td>Nom : <?= $info->lastname ?></td>
                     <td>Prénom : <?= $info->firstname ?></td>
                     <td>Date de naissance : <?= $info->birthdateFR ?></td>
@@ -33,13 +33,33 @@ if(isset($messageSuccess)){ ?>
                 }?>
     </table>
 </div>
-<a href="liste-patients.php?page=<?= $page - 1 ?>" class="btn"><</a>
-<?php
-    for ($i=1; $i < $pageNumber; $i++) { ?>
-        <a href="liste-patients.php?page=<?= $i ?>" class="btn"><?= $i ?></a>
-    <?php } 
-?>
-<a href="liste-patients.php?page=<?= $page + 1 ?>" class="btn">></a>
+<?php //affiche le numero des page
+                                        $beginPage = $page - 3;
+                                        if($beginPage < 1){
+                                            $beginPage = 1;
+                                        }
+                                        if ($page != 1){ ?>
+                                            <a href="liste-patients.php?page=1" class="btn"><<</a>
+                                            <a href="liste-patients.php?page=<?=($page - 1)?>" class="btn"><</a>
+                                        <?php }
+                                        if ($page > 4){ ?>
+                                            <span>...</span>
+                                        <?php }
+                                        $endPage = $page + 3;
+                                        if($endPage > $pageNumber) {
+                                            $endPage = $pageNumber;
+                                        }
+                                        for ($i = $beginPage; $i <= $endPage; $i++) {?>
+                                            <a href="liste-patients.php?page=<?= $i ?>" class="btn <?= $i == $_GET['page'] ? 'btn-danger' : '' ?>"><?= $i ?></a>
+                                    <?php } 
+                                    if ($page < $pageNumber - 3){ ?>
+                                        <span>...</span>
+                                    <?php }
+                                    if ($page != $pageNumber){ ?>
+                                        <a href="liste-patients.php?page=<?=($page + 1) ?>" class="btn">></a>
+                                        <a href="liste-patients.php?page=<?= $pageNumber ?>" class="btn">>></a>
+                                    <?php }
+                                    ?>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -28,31 +28,28 @@ if(isset($_POST['deleteProfil'])){
     }
 }
 
-
-
-if(isset($_GET['page'])){
+if (isset($_GET['page'])){
     $page = $_GET['page'];
-}else{
+}else {
     $page = 1;
 }
-$limitArray = ['limit' => 5];
+$limitArray = ['limit'=>5];
 $limitArray['offset'] = ($page * $limitArray['limit']) - $limitArray['limit'];
-if(isset($_POST['sendSearch'])){
-
-    if (!empty($_POST['searchPatientRequest'])){ 
-        $search['lastname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%';                
-    }  
-
-    if (!empty($_POST['searchbydate'])){
-        $search['birthdate'] = htmlspecialchars($_POST['searchbydate']);            
+//affiche le resultat de la recherche si le champs de recherche est activer , sinon toute la liste avec la pagination
+if(isset($_POST['sendSearch'])) {
+    if (!empty($_POST['searchPatientRequest'])){
+        $search['lastname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%';
+        // $search['firstname'] = htmlspecialchars($_POST['searchPatientRequest']) . '%';
     }
-    $showPatientsInfo = $patient->getAllPatientsInfo($limitArray, $search);
-    $pageNumber = ceil(count($showPatientsInfo = $patient->getAllPatientsInfo(array(), $search)) / 3);
-}else{
-    $showPatientsInfo = $patient->getAllPatientsInfo($limitArray);
-    $pageNumber = ceil(count($showPatientsInfo = $patient->getAllPatientsInfo($limitArray)) / 3);
+    if (!empty($_POST['searchbydate']) ){
+        $search['birthdate'] = htmlspecialchars($_POST['searchbydate']);
+    }
+    $list = $patient->getAllPatientsInfo($limitArray,$search);
+    $pageNumber = ceil(count($patient->getAllPatientsInfo(array(),$search)) / $limitArray['limit']);
+}else {
+    $list = $patient->getAllPatientsInfo($limitArray);
+    $pageNumber = ceil(count($patient->getAllPatientsInfo()) / $limitArray['limit']);
 }
-var_dump($pageNumber);
 
 /*cas des INT dans recherche : on doit envoyer un tableau de tableaux ou tableau d'objet a la place d'un simple tableau
 $tableau['champSQL'][type de données]   exemple ['type']ex: STR   || ['logical']ex: OR   ||  ['value']ex: 'toto' on utilise plus d'implode() */
